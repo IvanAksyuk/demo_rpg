@@ -2,22 +2,50 @@
 
 #include <cstdint>
 typedef std::uint64_t exptype;
-typedef std::uint16_t level_type;
+typedef std::uint16_t leveltype;
 
 class LevelSystem {
 public:
-	LevelSystem() : CurrentLevel(1), CurrentEXP(0) {}
+	static const exptype LEVEL2AT = 100;
+	LevelSystem(): 
+		CurrentLevel(1), 
+		CurrentEXP(0), 
+		EXPToNextLevel(LEVEL2AT)
+	{}
 
 	void gainEXP(exptype gained_exp) {
 		CurrentEXP += gained_exp;
-		check_if_leveled();
+		while (check_if_leveled()) {}
+
 	}
+	leveltype getLevel() {
+		return CurrentLevel;
+	}
+	exptype getCurrentEXP() {
+		return CurrentEXP;
+	}
+	exptype getEXPToNextLevel() {
+		return EXPToNextLevel;
+	}
+	virtual void LevelUP() = 0;
+
+
+
 protected:
-	level_type CurrentLevel;
+	leveltype CurrentLevel;
 	exptype CurrentEXP;
-	level_type LevelUpsAvailable;
+	exptype EXPToNextLevel;
 
-	void check_if_leveled() {
-
+	bool check_if_leveled() {
+		
+		static const leveltype LEVELSCALAR = 2;
+		if (CurrentEXP >= EXPToNextLevel) {
+			CurrentLevel++;
+			LevelUP();
+			EXPToNextLevel *= LEVELSCALAR;
+			return true;
+		}
+		return false;
+		
 	}
 };
