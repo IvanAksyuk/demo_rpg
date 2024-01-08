@@ -1,13 +1,14 @@
 #pragma once
 
-#include "stattypes.h"
+#include <cstdint>
+typedef std::uint16_t stattype;
 class Statblock {
 	stattype Strength; // 0xFF
 	stattype Intellect; //0xFF
 public:	
 	Statblock() :
-		Strength((stattype)1), 
-		Intellect((stattype)1) 
+		Strength((stattype)0), 
+		Intellect((stattype)0) 
 	{}
 	explicit Statblock(stattype strength, stattype intellect):
 		Strength(strength), 
